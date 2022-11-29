@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { userList } from "../data/users.list";
-import { pgHelper } from "../database/config/pg-helper";
 import { UserRepository } from "../database/repositories/user.repository";
 import { User } from "../models/user";
 

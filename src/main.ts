@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import { userRoutes } from "./routes/user.routes";
-import { pgHelper } from "./database/config/pg-helper";
+import { DataBaseConnection } from "./database/config/connection";
 
 dotenv.config();
 
@@ -12,8 +12,7 @@ app.use(cors());
 
 app.use("/users", userRoutes);
 
-pgHelper
-  .connect()
+DataBaseConnection.connect()
   .then(() => {
     app.listen(process.env.PORT || 3000, () => {
       console.log("API rodando...");

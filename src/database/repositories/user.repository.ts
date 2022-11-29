@@ -1,9 +1,9 @@
 import { User } from "../../models/user";
-import { pgHelper } from "../config/pg-helper";
+import { DataBaseConnection } from "../config/connection";
 import { UserEntity } from "../entities/user.entity";
 
 export class UserRepository {
-  private _repository = pgHelper.client.getRepository(UserEntity);
+  private _repository = DataBaseConnection.connection.getRepository(UserEntity);
 
   public async list() {
     return await this._repository.find();

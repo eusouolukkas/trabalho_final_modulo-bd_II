@@ -1,6 +1,6 @@
 import { Tasks } from "../../models/tasks";
 import { User } from "../../models/user";
-import { pgHelper } from "../config/pg-helper";
+import { DataBaseConnection } from "../config/connection";
 import { TasksEntity } from "../entities/tasks.entity";
 import { UserEntity } from "../entities/user.entity";
 import { UserRepository } from "./user.repository";
@@ -11,7 +11,8 @@ interface UpdateTasksDTO {
 }
 
 export class TasksRepository {
-  private _repository = pgHelper.client.getRepository(TasksEntity);
+  private _repository =
+    DataBaseConnection.connection.getRepository(TasksEntity);
 
   public async list() {
     return await this._repository.find({
@@ -31,11 +32,14 @@ export class TasksRepository {
     const userRepository = new UserRepository();
     const user = await userRepository.getById(tasks.user.id);
 
+    if (!user) {
+      throw new Error("Usuário não existe!");
+    }
+
     const tasksEntity = this._repository.create({
       id: tasks.id,
       title: tasks.title,
       description: tasks.description,
-      //user,
       user: user ?? undefined,
     });
 

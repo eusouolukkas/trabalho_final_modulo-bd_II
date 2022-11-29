@@ -98,8 +98,7 @@ export class TasksController {
         userResult.id,
         userResult.email,
         userResult.pass,
-        userResult.name,
-        userResult.tasks?.split(",")
+        userResult.name
       );
 
       const tasks = new Tasks(title, description, user);
@@ -121,35 +120,16 @@ export class TasksController {
     }
   }
 
-  public deleteTask(req: Request, res: Response) {
+  public async deleteTask(req: Request, res: Response) {
     try {
-      const { userId, taskId } = req.params;
+      const { id } = req.params;
 
-      const user = userList.find((user) => user.id == userId);
-
-      if (!user) {
-        return res.status(404).send({
-          ok: false,
-          message: "Usuário não encontrado!",
-        });
-      }
-
-      const task = user.tasks
-        ? user.tasks.findIndex((task) => task.id == taskId)
-        : -1;
-
-      if (task < 0) {
-        return res.status(404).send({
-          ok: false,
-          message: "Tarefa não encontrada!",
-        });
-      }
-
-      user.tasks?.splice(task, 1);
+      const repository = new TasksRepository();
+      const result = await repository.delete(id);
 
       return res.status(200).send({
         ok: true,
-        message: "Tarefa deletada com sucesso!",
+        data: result,
       });
     } catch (error: any) {
       return res.status(500).send({

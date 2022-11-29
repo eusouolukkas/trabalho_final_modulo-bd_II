@@ -5,6 +5,10 @@ const tasksRoutes = Router();
 
 //---------------TasksRoutes--------------
 
+tasksRoutes.get("/:userId/tasks/", (req: Request, res: Response) =>
+  new TasksController().listTask(req, res)
+);
+
 tasksRoutes.get("/:userId", new TasksController().listTask);
 
 tasksRoutes.post("/:userId", (req: Request, res: Response) => {
@@ -18,9 +22,5 @@ tasksRoutes.put("/:userId/:taskId", (req: Request, res: Response) =>
 tasksRoutes.delete("/:userId/:taskId", (req: Request, res: Response) =>
   new TasksController().deleteTask(req, res)
 );
-
-/* userRoutes.get("/:userId/tasks/", (req: Request, res: Response) =>
-  new TasksController().listAll(req, res)
-); */
 
 export { tasksRoutes };
